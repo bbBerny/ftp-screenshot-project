@@ -3,7 +3,7 @@
 A python project that captures window screenshots and uploads them via File Transfer Protocol to a remote FTP server
 
 ## Requirements
-- Python 3.7+
+- Python 3.13.3
 - Access to an FTP server
 - A working webcam
 
