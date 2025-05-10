@@ -6,8 +6,6 @@ from ftplib import FTP
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
 def open_camera():
     if not camera.isOpened():
         print('Unable to open camera!')
@@ -64,25 +62,31 @@ def check_list():
     print(files)
 
 
-
 if __name__ == '__main__':
     # Connect camera
     camera = cv.VideoCapture(1)
     WINDOW_NAME = 'Camera Feed'
 
     # Load credentials
-    
+    load_dotenv()
 
     SERVER_IP = os.getenv('SERVER_IP')
-    FTP_PORT = int(os.getenv('FTP_PORT'))
+    FTP_PORT = os.getenv('FTP_PORT')
     USER = os.getenv('USER')
     PASSWORD = os.getenv('PASSWORD')
 
-    # Establish connection to the server
+    if not all([SERVER_IP, FTP_PORT, USER, PASSWORD]):
+        print('Missing one or more environment variables:')
+        print(f'SERVER_IP: {SERVER_IP}')
+        print(f'FTP_PORT: {FTP_PORT}')
+        print(f'USER: {USER}')
+        print(f'PASSWORD: {PASSWORD}')
+        exit(1)
+
     ftp = FTP()
+    FTP_PORT = int(FTP_PORT)
     ftp.connect(SERVER_IP, FTP_PORT)
     ftp.login(USER, PASSWORD)
-
     # Main loop
     open_camera()
 
